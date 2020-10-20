@@ -9,7 +9,10 @@ ui <- dashboardPage(
   skin = "blue",
   dashboardHeader(title = "PARcos"),
   dashboardSidebar(
-    h4("PAR-CLIP data explorer"),
+    br(),
+    sidebarUserPanel(name = "PAR-CLIP data explorer", subtitle = HTML("&#169 Sarah Arcos, 2020")),
+    br(),
+    br(),
     fileInput('file1', 'Cluster CSV File',
               accept=c('text/csv', 
                        'text/comma-separated-values,text/plain',
@@ -17,15 +20,14 @@ ui <- dashboardPage(
     fileInput('file2', 'SAM File',
               accept=c('text/tsv',
                        'text/tab-separated-values,text/plain',
-                       '.sam')),
-    h5(HTML("&#169 Sarah Arcos, 2020"))
+                       '.sam'))
   ),
   dashboardBody(
     tags$head(
       tags$link(rel = "stylesheet", type = "text/css", href = "custom.css")
     ),
     fluidRow(
-      box(title = "Table of Cluster Data", 
+      box(title = "PAR-CLIP Cluster Table", 
           width = 12,
           status = "primary",
           solidHeader = TRUE,
@@ -39,7 +41,7 @@ ui <- dashboardPage(
           plotlyOutput("test"))
     ),
     fluidRow(
-      box(title = "Reads in Cluster",
+      box(title = "Reads in Selected Cluster",
           width = 12,
           status = "success",
           solidHeader = TRUE,
@@ -203,8 +205,8 @@ server <- function(input, output) {
         legend.position = "none",
         axis.text = element_text(size = 12),
         axis.title.y = element_blank(),
-        plot.title = element_text(size = 18),
-        plot.subtitle = element_text(size = 18),
+        plot.title = element_text(size = 16),
+        plot.subtitle = element_text(size = 16),
         axis.ticks.y = element_blank(),
         axis.text.y = element_blank(),
         panel.grid.major.y = element_blank(),
@@ -213,7 +215,7 @@ server <- function(input, output) {
         panel.grid.minor.x = element_blank(),
         panel.background = element_rect(fill = 'white')
       ) +
-      labs(title = paste("Reads assigned to selected cluster: ", current_row$ClusterID, sep = ""),
+      labs(title = paste("Reads from cluster: ", current_row$ClusterID, sep = ""),
            subtitle = paste("Aligned to: ", current_row$GeneName, ", ", current_row$`Aligned to`, sep = ""),
            x = paste("Position on ", current_row$Chr, sep = ""))
   })
